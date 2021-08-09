@@ -1,28 +1,15 @@
 package com.blogpessoal.Turma28.modelos;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- * Classe Modelo para Usuario , a mesma é considerada uma entidade no banco de
- * Dados
- * 
- * @since 1.0
- * @author Turma 28
- */
-@Entity
-public class Usuario {
+public class UsuarioDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NotNull
 	private Long id;
-
-	@NotBlank(message = "Necessario Nome")
+	
 	private String nome;
 
 	@NotBlank(message = "Necessario Email")
@@ -30,19 +17,9 @@ public class Usuario {
 	private String email;
 
 	@Size(min = 5, max = 100, message = "Necessario min 5 caracteres")
-	private String senha; // Necessarioamente Size deve ser max 100
+	private String senha;
 
-	public Usuario() {
-		super();
-	}
-
-	public Usuario(Long id, String nome, String email, String senha) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.senha = senha;
-	}
+	private String token;
 
 	public Long getId() {
 		return id;
@@ -74,6 +51,14 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }
