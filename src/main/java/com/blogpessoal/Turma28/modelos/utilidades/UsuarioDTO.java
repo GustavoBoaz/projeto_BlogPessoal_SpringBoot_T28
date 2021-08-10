@@ -1,15 +1,22 @@
-package com.blogpessoal.Turma28.modelos;
+package com.blogpessoal.Turma28.modelos.utilidades;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Classe DTO modelo para Logar e Alter usuario - Para loguin: necessario apenas
+ * email e senha como atributos; - Para Alterar: necessario o id para alterar
+ * nome e senha; - nota: email é um atributo que não pode ser alterado
+ * 
+ * @since 1.5
+ * @author Turma 28
+ *
+ */
 public class UsuarioDTO {
 
-	@NotNull
 	private Long id;
-	
+
 	private String nome;
 
 	@NotBlank(message = "Necessario Email")

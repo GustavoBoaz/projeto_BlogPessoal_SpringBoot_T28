@@ -1,12 +1,19 @@
 package com.blogpessoal.Turma28.modelos;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Classe Modelo para Usuario , a mesma é considerada uma entidade no banco de
@@ -31,6 +38,10 @@ public class Usuario {
 
 	@Size(min = 5, max = 100, message = "Necessario min 5 caracteres")
 	private String senha; // Necessarioamente Size deve ser max 100
+
+	@OneToMany(mappedBy = "criador", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"criador"})
+	private List<Postagem> minhasPostagens = new ArrayList<>();
 
 	public Usuario() {
 		super();
@@ -74,6 +85,14 @@ public class Usuario {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public List<Postagem> getMinhasPostagens() {
+		return minhasPostagens;
+	}
+
+	public void setMinhasPostagens(List<Postagem> minhasPostagens) {
+		this.minhasPostagens = minhasPostagens;
 	}
 
 }

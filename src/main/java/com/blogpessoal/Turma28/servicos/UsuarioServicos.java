@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.blogpessoal.Turma28.modelos.Usuario;
-import com.blogpessoal.Turma28.modelos.UsuarioDTO;
+import com.blogpessoal.Turma28.modelos.utilidades.UsuarioDTO;
 import com.blogpessoal.Turma28.repositorios.UsuarioRepositorio;
 
 @Service
