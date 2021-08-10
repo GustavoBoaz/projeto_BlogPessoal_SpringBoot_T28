@@ -32,7 +32,7 @@ public class PostagemControlador {
 
 	@PostMapping("/salvar")
 	public ResponseEntity<Object> cadastrarPostagem(@Valid @RequestBody Postagem novaPostagem) {
-		Optional<Postagem> objetoCadastrado = servicos.cadastrarPostagem(novaPostagem);
+		Optional<?> objetoCadastrado = servicos.cadastrarPostagem(novaPostagem);
 
 		if (objetoCadastrado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoCadastrado.get());

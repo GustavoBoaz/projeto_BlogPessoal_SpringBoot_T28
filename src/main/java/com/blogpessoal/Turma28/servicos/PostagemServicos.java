@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blogpessoal.Turma28.modelos.Postagem;
+import com.blogpessoal.Turma28.modelos.Tema;
 import com.blogpessoal.Turma28.repositorios.PostagemRepositorio;
+import com.blogpessoal.Turma28.repositorios.TemaRepositorio;
 import com.blogpessoal.Turma28.repositorios.UsuarioRepositorio;
 
 @Service
@@ -14,22 +16,30 @@ public class PostagemServicos {
 
 	private @Autowired PostagemRepositorio repositorioP;
 	private @Autowired UsuarioRepositorio repositorioU;
+	private @Autowired TemaRepositorio repositorioT;
 
 	/**
 	 * Método utilizado para cadastrar uma postagem nova no banco validando se o
-	 * usuario criador é existente. O id do usuario criador deve ser passado para
-	 * que a criação seja efetuada. Caso id do usuario não for passado ou não
-	 * existir no banco retorna um Optional.empty()
+	 * usuario criador é existente. O id do usuario criador e o id do tema deve ser
+	 * passado dentro do objeto postagem para que a criação seja efetuada. Caso id
+	 * do usuario não for passado ou não existir no banco retorna um
+	 * Optional.empty()
 	 * 
 	 * @param novaPostagem do tipo Postagem
 	 * @return Optional com Postagem
-	 * @since 1.0
+	 * @since 1.5
 	 * @author Turma 28
 	 */
-	public Optional<Postagem> cadastrarPostagem(Postagem novaPostagem) {
+	public Optional<?> cadastrarPostagem(Postagem novaPostagem) {
+		Optional<Tema> objetoExistente = repositorioT.findById(novaPostagem.getTema().getId());
 		return repositorioU.findById(novaPostagem.getCriador().getId()).map(usuarioExistente -> {
-			novaPostagem.setCriador(usuarioExistente);
-			return Optional.ofNullable(repositorioP.save(novaPostagem));
+			if (objetoExistente.isPresent()) {
+				novaPostagem.setCriador(usuarioExistente);
+				novaPostagem.setTema(objetoExistente.get());
+				return Optional.ofNullable(repositorioP.save(novaPostagem));
+			} else {
+				return Optional.empty();
+			}
 		}).orElseGet(() -> {
 			return Optional.empty();
 		});
