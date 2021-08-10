@@ -38,27 +38,6 @@ public class UsuarioServicos {
 	}
 
 	/**
-	 * Método utilizado para cadastrar um usuario no banco de dados, o mesmo é
-	 * responsavel por retornar vazio caso Usuario exista
-	 * 
-	 * @param novoUsuario do tipo Usuario
-	 * @return Usuario Criado quando não existir no banco
-	 * @since 1.5
-	 * @author Baby
-	 */
-	public Optional<Object> cadastrarUsuario2(Usuario novoUsuario) {
-		Optional<Usuario> usuario = repositorio.findByEmail(novoUsuario.getEmail());
-		if (usuario.isPresent()) {
-			return Optional.empty();
-		} else {
-			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			String senhaCriptografada = encoder.encode(novoUsuario.getSenha());
-			novoUsuario.setSenha(senhaCriptografada);
-			return Optional.ofNullable(repositorio.save(novoUsuario));
-		}
-	}
-
-	/**
 	 * Metodo utilizado para pegar credenciais do usuario com Tokem (Formato Basic),
 	 * este método sera utilizado para retornar ao front o token utilizado para ter
 	 * acesso aos dados do usuario e mantelo logado no sistema
@@ -105,7 +84,7 @@ public class UsuarioServicos {
 		return repositorio.findById(usuarioParaAlterar.getId()).map(usuarioExistente -> {
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 			String senhaCriptografada = encoder.encode(usuarioParaAlterar.getSenha());
-			
+
 			usuarioExistente.setNome(usuarioParaAlterar.getNome());
 			usuarioExistente.setSenha(senhaCriptografada);
 			return Optional.ofNullable(repositorio.save(usuarioExistente));
