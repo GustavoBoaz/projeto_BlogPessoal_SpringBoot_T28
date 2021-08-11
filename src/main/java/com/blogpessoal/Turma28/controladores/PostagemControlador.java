@@ -22,14 +22,25 @@ import com.blogpessoal.Turma28.modelos.Postagem;
 import com.blogpessoal.Turma28.repositorios.PostagemRepositorio;
 import com.blogpessoal.Turma28.servicos.PostagemServicos;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/api/v1/postagem")
+@Api(tags = "Controlador de Postagem", description = "Utilitario de Postagens")
 @CrossOrigin("*")
 public class PostagemControlador {
 
 	private @Autowired PostagemRepositorio repositorio;
 	private @Autowired PostagemServicos servicos;
 
+	@ApiOperation(value = "Salva nova postagem no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna postagem cadastrada"),
+			@ApiResponse(code = 400, message = "Erro na requisição: Id Tena ou Id Usuario invalido")
+	})
 	@PostMapping("/salvar")
 	public ResponseEntity<Object> cadastrarPostagem(@Valid @RequestBody Postagem novaPostagem) {
 		Optional<?> objetoCadastrado = servicos.cadastrarPostagem(novaPostagem);
@@ -42,6 +53,11 @@ public class PostagemControlador {
 
 	}
 
+	@ApiOperation(value = "Busca lista de postagens no sistema")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna lista de postagens"),
+			@ApiResponse(code = 204, message = "Retorno sem postagens")
+	})
 	@GetMapping("/todas")
 	public ResponseEntity<Object> buscarTodas() {
 		List<Postagem> listaPostagem = repositorio.findAll();
@@ -54,6 +70,11 @@ public class PostagemControlador {
 
 	}
 	
+	@ApiOperation(value = "Busca postagem por Id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna postagem existente"),
+			@ApiResponse(code = 204, message = "Retorno inexistente")
+	})
 	@GetMapping("/{id_postagem}")
 	public ResponseEntity<Postagem> buscarPorId(@PathVariable(value = "id_postagem") Long id) {
 		Optional<Postagem> objetoPostagem = repositorio.findById(id);
@@ -64,11 +85,20 @@ public class PostagemControlador {
 		}
 	}
 	
+	@ApiOperation(value = "Busca postagems por Titulo")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna postagems existente ou inexistente")
+	})
 	@GetMapping("/pesquisa")
 	public ResponseEntity<List<Postagem>> buscarPorTitulo(@RequestParam(defaultValue = "") String titulo) {
 		return ResponseEntity.status(200).body(repositorio.findAllByTituloContainingIgnoreCase(titulo));
 	}
 	
+	@ApiOperation(value = "Alterar postagem existente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Retorna postagem alterado"),
+			@ApiResponse(code = 400, message = "Id de postagem invalida")
+	})
 	@PutMapping("/alterar")
 	public ResponseEntity<Object> alterar(@Valid @RequestBody Postagem postagemParaAlterar) {
 		Optional<Postagem> objetoAlterado = servicos.alterarPostagem(postagemParaAlterar);
@@ -80,6 +110,11 @@ public class PostagemControlador {
 		}
 	}
 	
+	@ApiOperation(value = "Deletar postagem existente")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Caso deletada!"),
+			@ApiResponse(code = 400, message = "Id de postagem invalida")
+	})
 	@DeleteMapping("/deletar/{id_postagem}")
 	public ResponseEntity<Object> deletarPorId(@PathVariable(value = "id_postagem") Long idPostagem) {
 		Optional<Postagem> objetoExistente = repositorio.findById(idPostagem);
