@@ -83,8 +83,8 @@ public class UsuarioControlador {
 	}
 
 	@PutMapping("/alterar")
-	public ResponseEntity<Object> alterar(@Valid @RequestBody UsuarioDTO novoUsuario) {
-		Optional<?> objetoAlterado = servicos.alterarUsuario(novoUsuario);
+	public ResponseEntity<Object> alterar(@Valid @RequestBody UsuarioDTO usuarioParaAlterar) {
+		Optional<?> objetoAlterado = servicos.alterarUsuario(usuarioParaAlterar);
 
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
