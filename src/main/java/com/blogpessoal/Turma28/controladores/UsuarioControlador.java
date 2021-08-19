@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blogpessoal.Turma28.excecoes.modelo.usuario.ExcecaoEmailExistente;
+import com.blogpessoal.Turma28.excecoes.modelo.usuario.ExcecaoErroEmailOuSenha;
+import com.blogpessoal.Turma28.excecoes.modelo.usuario.ExcecaoIdUsuarioNaoExistente;
 import com.blogpessoal.Turma28.modelos.Usuario;
 import com.blogpessoal.Turma28.modelos.utilidades.UsuarioDTO;
 import com.blogpessoal.Turma28.repositorios.UsuarioRepositorio;
@@ -50,7 +53,7 @@ public class UsuarioControlador {
 		if (objetoCadastrado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoCadastrado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoEmailExistente(novoUsuario.getEmail());
 		}
 
 	}
@@ -67,7 +70,7 @@ public class UsuarioControlador {
 		if (objetoCredenciado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoCredenciado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoErroEmailOuSenha();
 		}
 
 	}
@@ -125,7 +128,7 @@ public class UsuarioControlador {
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoIdUsuarioNaoExistente(usuarioParaAlterar.getId());
 		}
 	}
 
@@ -141,7 +144,7 @@ public class UsuarioControlador {
 			repositorio.deleteById(idUsuario);
 			return ResponseEntity.status(200).build();
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoIdUsuarioNaoExistente(idUsuario);
 		}
 
 	}

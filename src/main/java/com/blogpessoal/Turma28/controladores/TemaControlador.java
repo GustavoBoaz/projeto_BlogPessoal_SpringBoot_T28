@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blogpessoal.Turma28.excecoes.modelo.tema.ExcecaoIdTemaNaoExiste;
 import com.blogpessoal.Turma28.modelos.Tema;
 import com.blogpessoal.Turma28.repositorios.TemaRepositorio;
 import com.blogpessoal.Turma28.servicos.TemaServicos;
@@ -98,7 +99,7 @@ public class TemaControlador {
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoIdTemaNaoExiste(temaParaAlterar.getId());
 		}
 	}
 
@@ -114,7 +115,7 @@ public class TemaControlador {
 			repositorio.deleteById(idTema);
 			return ResponseEntity.status(200).build();
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoIdTemaNaoExiste(idTema);
 		}
 
 	}

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blogpessoal.Turma28.excecoes.modelo.postagem.ExcecaoIdPostagemNaoExistente;
+import com.blogpessoal.Turma28.excecoes.modelo.postagem.ExcecaoIdUsuarioOuIdTemaNaoExistente;
 import com.blogpessoal.Turma28.modelos.Postagem;
 import com.blogpessoal.Turma28.repositorios.PostagemRepositorio;
 import com.blogpessoal.Turma28.servicos.PostagemServicos;
@@ -48,7 +50,7 @@ public class PostagemControlador {
 		if (objetoCadastrado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoCadastrado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoIdUsuarioOuIdTemaNaoExistente();
 		}
 
 	}
@@ -106,7 +108,7 @@ public class PostagemControlador {
 		if (objetoAlterado.isPresent()) {
 			return ResponseEntity.status(201).body(objetoAlterado.get());
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoIdPostagemNaoExistente(postagemParaAlterar.getId());
 		}
 	}
 	
@@ -122,7 +124,7 @@ public class PostagemControlador {
 			repositorio.deleteById(idPostagem);
 			return ResponseEntity.status(200).build();
 		} else {
-			return ResponseEntity.status(400).build();
+			throw new ExcecaoIdPostagemNaoExistente(idPostagem);
 		}
 		
 	}
